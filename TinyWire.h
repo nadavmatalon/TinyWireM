@@ -3,13 +3,12 @@
 #ifndef _TinyWire_h
 #define _TineWire_h
 
+#include <Arduino.h>
 #include <TinyWire_USI.h>
 #include <inttypes.h>
-#include "Stream.h"
+#include <avr/io.h>
 
 #define BUFFER_LENGTH 32
-
-#define WIRE_HAS_END 1
 
 class TinyWire : public Stream {
 
@@ -33,7 +32,7 @@ class TinyWire : public Stream {
   
     void end() {}
 
-    void setClock(unsigned long _) {}
+//    void setClock(unsigned long _) {}
 
     void beginTransmission(byte address) {
         if (transmitting) {
@@ -86,11 +85,11 @@ class TinyWire : public Stream {
             while (isize-- > 0) write((byte)(iaddress >> (isize * 8)));
             endTransmission(false);
         }
-        if (quantity > BUFFER_LENGTH) quantity = BUFFER_LENGTH;      // clamp to buffer length
+        if (quantity > BUFFER_LENGTH) quantity = BUFFER_LENGTH;                               // clamp to buffer length
         localerror = !i2c_rep_start((address << 1) | I2C_READ);
         if (error == 0 && localerror) error = 2;
         for (byte cnt=0; cnt<quantity; cnt++) rxBuffer[cnt] = i2c_read(cnt == quantity - 1);  // perform blocking read into buffer
-        rxBufferIndex = 0;                                          // set rx buffer iterator vars
+        rxBufferIndex = 0;                                                                    // set rx buffer iterator vars
         rxBufferLength = quantity;
         if (sendStop) {
               transmitting = 0;

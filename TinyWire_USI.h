@@ -18,9 +18,6 @@
  *   in case of a I2C bus lockup (i.e., SCL constantly low). 0 means no timeout
  */
 
-#include <avr/io.h>
-#include <Arduino.h>
-
 #ifndef _TinyWire_USI_h
 #define _TinyWire_USI_h
 
@@ -199,7 +196,6 @@ void i2c_wait_scl_high() {
 #endif
 }
 
-
 boolean i2c_init() {
     __asm__ __volatile__
     (" cbi      %[SDADDR],%[SDAPIN]     ;release SDA \n\t"
@@ -236,7 +232,7 @@ bool i2c_start(byte addr) {
      " ret"
      : : [SDADDR] "I"  (SDA_DDR), [SDAPIN] "I" (SDA_PIN),
        [SCLIN] "I" (SCL_IN),[SCLPIN] "I" (SCL_PIN)); 
-    return true; // we never return here!
+    return true;
 }
 
 bool i2c_rep_start(byte addr) {
@@ -259,7 +255,7 @@ bool i2c_rep_start(byte addr) {
      " ret"
      : : [SCLDDR] "I"  (SCL_DDR), [SCLPIN] "I" (SCL_PIN),[SCLIN] "I" (SCL_IN),
          [SDADDR] "I"  (SDA_DDR), [SDAPIN] "I" (SDA_PIN)); 
-  return true; // just to fool the compiler
+  return true;
 }
 
 void i2c_start_wait(byte addr) {
@@ -380,7 +376,7 @@ bool i2c_write(byte value) {
      ::
       [SCLDDR] "I"  (SCL_DDR), [SCLPIN] "I" (SCL_PIN), [SCLIN] "I" (SCL_IN),
       [SDADDR] "I"  (SDA_DDR), [SDAPIN] "I" (SDA_PIN), [SDAIN] "I" (SDA_IN)); 
-  return true; // fooling the compiler
+    return true;
 }
 
 byte i2c_read(bool last) {
@@ -449,7 +445,7 @@ byte i2c_read(bool last) {
       [SCLDDR] "I"  (SCL_DDR), [SCLPIN] "I" (SCL_PIN), [SCLIN] "I" (SCL_IN),
       [SDADDR] "I"  (SDA_DDR), [SDAPIN] "I" (SDA_PIN), [SDAIN] "I" (SDA_IN) 
      ); 
-  return ' '; // fool the compiler!
+    return ' ';
 }
 
 #endif
