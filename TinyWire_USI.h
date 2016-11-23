@@ -1,4 +1,8 @@
 // TinyWire_USI.h
+#define SDA_PORT PORTA
+#define SDA_PIN 7
+#define SCL_PORT PORTB
+#define SCL_PIN 2
 
 /*  Definitions:
  *  #define SDA_PIN 3
