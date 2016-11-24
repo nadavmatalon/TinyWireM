@@ -47,29 +47,41 @@ __asm volatile ("nop");
 #include <inttypes.h>
 #include <avr/io.h>
 #include <Stream.h>
+//#include "TinyWire_Config.h"
 
 namespace Tinywire {
 
-
-    
     const byte BUFFER_LENGTH = 32;
+    const byte DEFAULT_SDA_PORT = PORTA;
+    const byte DEFAULT_SDA_PIN  = 7;
+    const byte DEFAULT_SCL_PORT = PORTB;
+    const byte DEFAULT_SCL_PIN  = 2;
 
     class TinyWire : public Stream {
         private:
             byte devAddr;
+            byte sdaPort;
+            byte sdaPin;
+            byte sclPort;
+            byte sclPin;
             byte rxBuffer[BUFFER_LENGTH];
             byte rxBufferIndex;
             byte rxBufferLength;
             byte transmitting;
             byte error;
         public:
-            TinyWire();                                 // MASTER
-            TinyWire(byte deviceAddr);                  // SLAVE
-            ~TinyWire();                                // MASTER / SLAVE
-            void   begin();                             // MASTER
-//          void   begin();                             // SLAVE
-            void   end();                               // MASTER
-//          void   end();                               // SLAVE
+            TinyWire(                                                               // MASTER
+                     byte sda_port = DEFAULT_SDA_PORT,
+                     byte sda_pin  = DEFAULT_SDA_PIN,
+                     byte scl_port = DEFAULT_SCL_PORT,
+                     byte scl_pin  = DEFAULT_SCL_PIN
+                    );
+            TinyWire(const byte deviceAddr);                                        // SLAVE
+            ~TinyWire();                                                            // MASTER / SLAVE
+            void   begin();                                                         // MASTER
+//          void   begin();                                                         // SLAVE
+            void   end();                                                           // MASTER
+//          void   end();                                                           // SLAVE
             void   beginTransmission(byte address);
             byte   endTransmission();
             byte   endTransmission(byte sendStop);

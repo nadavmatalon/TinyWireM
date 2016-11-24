@@ -1,25 +1,25 @@
 // TinyWire_USI.h
+
 #define SDA_PORT PORTA
 #define SDA_PIN 7
 #define SCL_PORT PORTB
 #define SCL_PIN 2
 
-/*  Definitions:
- *  #define SDA_PIN 3
- *  #define SDA_PORT PORTD
- *  #define SCL_PIN 5
- *  #define SCL_PORT PORTB
- *
- * - I2C_CPUFREQ, when changing CPU clock frequency dynamically
- * - I2C_FASTMODE = 1 meaning that the I2C bus allows speeds up to 400 kHz
- * - I2C_SLOWMODE = 1 meaning that the I2C bus will allow only up to 25 kHz 
- * - I2C_NOINTERRUPT = 1 in order to prohibit interrupts while 
- *   communicating (see below). This can be useful if you use the library 
- *   for communicationg with SMbus devices, which have timeouts.
- *   Note, however, that interrupts are disabled from issuing a start condition
- *   until issuing a stop condition. So use this option with care!
- * - I2C_TIMEOUT = 0..10000 mssec in order to return from the I2C functions
- *   in case of a I2C bus lockup (i.e., SCL constantly low). 0 means no timeout
+/*
+    I2C_CPUFREQ, when changing CPU clock frequency dynamically
+
+    I2C_FASTMODE = 1 meaning that the I2C bus allows speeds up to 400 kHz
+   
+    I2C_SLOWMODE = 1 meaning that the I2C bus will allow only up to 25 kHz
+   
+    I2C_NOINTERRUPT = 1 in order to prohibit interrupts while
+    communicating (see below). This can be useful if you use the library
+    for communicationg with SMbus devices, which have timeouts.
+    Note, however, that interrupts are disabled from issuing a start condition
+    until issuing a stop condition. So use this option with care!
+   
+    I2C_TIMEOUT = 0..10000 mssec in order to return from the I2C functions
+    in case of a I2C bus lockup (i.e., SCL constantly low). 0 means no timeout
  */
 
 #ifndef _TinyWire_USI_h
@@ -28,7 +28,7 @@
 // Init function. Needs to be called once in the beginning.
 // Returns false if SDA or SCL are low, which probably means 
 // a I2C bus lockup or that the lines are not pulled up.
-//bool __attribute__ ((noinline)) i2c_init(void) __attribute__ ((used));  // Compile Error!
+bool __attribute__ ((noinline)) i2c_init(void) __attribute__ ((used));
 
 // Start transfer function: <addr> is the 8-bit I2C address (including the R/W bit).
 // Return: true if the slave replies with an "acknowledge", false otherwise
@@ -89,11 +89,11 @@ byte __attribute__ ((noinline)) i2c_read(bool last) __attribute__ ((used));
 #define I2C_TIMEOUT 0
 #else 
 #if I2C_TIMEOUT > 10000
-#error I2C_TIMEOUT is too large
+#define I2C_TIMEOUT 10000
 #endif
 #endif
 
-#define I2C_TIMEOUT_DELAY_LOOPS (I2C_CPUFREQ/1000UL)*I2C_TIMEOUT/4000UL
+#define I2C_TIMEOUT_DELAY_LOOPS (I2C_CPUFREQ / 1000UL) * I2C_TIMEOUT / 4000UL
 #if I2C_TIMEOUT_DELAY_LOOPS < 1
 #define I2C_MAX_STRETCH 1
 #else
@@ -200,7 +200,7 @@ void i2c_wait_scl_high() {
 #endif
 }
 
-boolean i2c_init() {
+bool i2c_init(void) {
     __asm__ __volatile__
     (" cbi      %[SDADDR],%[SDAPIN]     ;release SDA \n\t"
      " cbi      %[SCLDDR],%[SCLPIN]     ;release SCL \n\t" 

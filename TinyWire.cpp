@@ -37,19 +37,28 @@ __asm volatile ("nop");
 #endif
 
 #include "TinyWire.h"
-#include <TinyWire_USI.h>
+#include "TinyWire_USI.h"
 
 /*==============================================================================================================*
     MASTER CONSTRUCTOR
  *==============================================================================================================*/
 
-TinyWire::TinyWire() {}
+TinyWire::TinyWire(
+                    byte sda_port,
+                    byte sda_pin,
+                    byte scl_port,
+                    byte scl_pin) :
+                    sdaPort(sda_port),
+                    sdaPin(sda_pin),
+                    sclPort(scl_port),
+                    sclPin(scl_pin
+                  ) {}
 
 /*==============================================================================================================*
     SLAVE CONSTRUCTOR
  *==============================================================================================================*/
 
-TinyWire::TinyWire(byte deviceAddr) {
+TinyWire::TinyWire(const byte deviceAddr) {
     devAddr = deviceAddr;
 }
 
