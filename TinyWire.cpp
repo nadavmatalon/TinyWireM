@@ -43,22 +43,22 @@ __asm volatile ("nop");
     MASTER CONSTRUCTOR
  *==============================================================================================================*/
 
-TinyWire::TinyWire(
-                    byte sda_port,
-                    byte sda_pin,
-                    byte scl_port,
-                    byte scl_pin) :
-                    sdaPort(sda_port),
-                    sdaPin(sda_pin),
-                    sclPort(scl_port),
-                    sclPin(scl_pin
-                  ) {}
+TinyWire::TinyWire(byte sda_port, byte sda_pin, byte scl_port, byte scl_pin) {
+    sdaPort = sda_port;
+    sdaPin  = sda_pin;
+    sclPort = scl_port;
+    sclPin  = scl_pin;
+}
 
 /*==============================================================================================================*
     SLAVE CONSTRUCTOR
  *==============================================================================================================*/
 
-TinyWire::TinyWire(const byte deviceAddr) {
+TinyWire::TinyWire(byte sda_port, byte sda_pin, byte scl_port, byte scl_pin, byte deviceAddr) {
+    sdaPort = sda_port;
+    sdaPin  = sda_pin;
+    sclPort = scl_port;
+    sclPin  = scl_pin;
     devAddr = deviceAddr;
 }
 
@@ -74,7 +74,7 @@ TinyWire::~TinyWire() {}
 
 void TinyWire::begin() {
     rxBufferIndex  = 0;
-    rxBufferLength = 0;
+    rxBuffMASTER_SCL_PINerLength = 0;
     error          = 0;
     transmitting   = false;
     i2c_init();

@@ -70,13 +70,8 @@ namespace Tinywire {
             byte transmitting;
             byte error;
         public:
-            TinyWire(                                                               // MASTER
-                     byte sda_port = DEFAULT_SDA_PORT,
-                     byte sda_pin  = DEFAULT_SDA_PIN,
-                     byte scl_port = DEFAULT_SCL_PORT,
-                     byte scl_pin  = DEFAULT_SCL_PIN
-                    );
-            TinyWire(const byte deviceAddr);                                        // SLAVE
+            TinyWire(byte sda_port, byte sda_pin, byte scl_port, byte scl_pin);
+            TinyWire(byte sda_port, byte sda_pin, byte scl_port, byte scl_pin, byte deviceAddr);
             ~TinyWire();                                                            // MASTER / SLAVE
             void   begin();                                                         // MASTER
 //          void   begin();                                                         // SLAVE
