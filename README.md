@@ -9,20 +9,28 @@
 
 ## INTRODUCTION
 
+This library enables members of the ATtiny family to become an I2C Bus Master. The library is based on a software implementation of I2C which is slower than the hardware one, but nevertheless allows the user to set any of the ATtiny pins as SDA & SCL.
 
 ## REPOSITORY CONTENTS
+
+- **TinyWireM.h** - Library Header file.
+- **TinyWireM.h.cpp** - Library Compilation.
+- **/utility** 
+    - **TinyWireM_USI.h** - Header file with the TWI-USI functionality.
+- **/examples**  
+    - **/TinyWireM_Example**
+        - **TinyWireM_Example.ino** - A basic sketch for testing whether the MCP9802 is hooked-up and operating correctly.
+- **/extras** 
+    - **License.txt** - A cope of the end-user license agreement.  
+- **keywords.txt** - Keywords for this library which will be highlighted in sketches within the Arduino IDE. 
+- **library.properties** - General library properties for the Arduino's IDE (>1.5) Library Package Manager.
+- **README.md** - The readme file for this library.
+- **library.json** - JSON file for the Arduino's IDE (>1.5) Package Manager.
 
 
 ## GENERAL NOTES
 
-
-## LIBRARY INSTALLATION & SETUP
-
-
-## LIBRARY FUNCTIONS
-
-
-## RUNNING THE EXAMPLE SKETCHES
+This library follows the convetions of the Arduino's built-in [Wire](https://github.com/arduino/Arduino/tree/master/hardware/arduino/avr/libraries/Wire) library, with only 'TinyWireM' replacing the 'Wire' keyword. Hence, for example, use TinyWireM.begin() to join the I2C Bus as Master, or TinyWireM.requestFrom(SLAVE_ADDR, NUM_BYTES) to request a certain number of bytes from one of the Slave devices on the bus.
 
 
 ## BUG REPORTS
@@ -35,7 +43,7 @@ Please report any issues/bugs/suggestions at the [Issues](https://github.com/nad
 
 ## VERSION HISTORY
 
-__Ver. 1.0.0__ - First release (23.11.16)  
+__Ver. 1.0.0__ - First release (1.12.16)  
 
 
 ## LICENSE
