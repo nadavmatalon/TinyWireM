@@ -1,15 +1,14 @@
 {
-		"name": "TinyWire",
+		"name": "TinyWireM",
 		"version": "1.0.0",
 		"frameworks": "AVR",
 		"license": "MIT",
 		"keywords": "I2C, WIRE, ATtiny, USI",
 		"description": "ATtiny I2C Master Library",
 		"downloadUrl": "https://github.com/nadavmatalon/TinyWireM/archive/master.zip",
-		"authors":
+		"maintainers":
 		{
 		        "name": "Nadav Matalon",
-		        "maintainer": true
 		},
 		"repository":
 		{
