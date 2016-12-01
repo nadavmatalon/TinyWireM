@@ -1,5 +1,5 @@
 /*************************************************************************
-* Title:    TinyWire (ATtiny I2C Master & Slave Library)
+* Title:    TinyWireM (ATtiny I2C Master Library)
 * Author:   Nadav Matalon <nadav.matalon@gmail.com>
 * IDE:      Arduino IDE (1.6.12)
 **************************************************************************/
