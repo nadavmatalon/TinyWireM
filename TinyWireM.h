@@ -69,7 +69,6 @@ class USI_TWI_M {
         USI_TWI_M();
         void begin();
         void end();
-        void setClock(uint32_t);
         void beginTransmission(uint8_t address);
         void beginTransmission(int address);
         uint8_t endTransmission(uint8_t sendStop);
