@@ -1,5 +1,5 @@
 
-# TinyWire
+# TinyWireM
 
 [![Platform Badge](https://img.shields.io/badge/platform-Arduino-orange.svg)](https://www.arduino.cc/)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -27,7 +27,7 @@
 
 ## BUG REPORTS
 
-Please report any issues/bugs/suggestions at the [Issues](https://github.com/nadavmatalon/TinyWire/issues) section of this Github repository.
+Please report any issues/bugs/suggestions at the [Issues](https://github.com/nadavmatalon/TinyWireM/issues) section of this Github repository.
 
 
 ## TODO

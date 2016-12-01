@@ -1,99 +1,68 @@
-// TinyWire_USI.h
+/*==============================================================================================================*
+ 
+ @file     TinyWireM_USI.h
+ 
+ *==============================================================================================================*/
+
+#if 1
+__asm volatile ("nop");
+#endif
+
+#include <avr/io.h>
+#include <Arduino.h>
+
+#ifndef _TinyWireM_USI_h
+#define _TinyWireM_USI_h
+
+bool __attribute__ ((noinline)) i2c_start(uint8_t addr) __attribute__ ((used));
+
+void  __attribute__ ((noinline)) i2c_start_wait(uint8_t addr) __attribute__ ((used));
+
+bool __attribute__ ((noinline)) i2c_rep_start(uint8_t addr) __attribute__ ((used));
+
+void __attribute__ ((noinline)) i2c_stop(void) asm("ass_i2c_stop") __attribute__ ((used));
+
+bool __attribute__ ((noinline)) i2c_write(uint8_t value) asm("ass_i2c_write") __attribute__ ((used));
+
+uint8_t __attribute__ ((noinline)) i2c_read(bool last) __attribute__ ((used));
+
+#ifndef F_CPU
+#define F_CPU 20000000UL
+#endif
 
 #define SDA_PORT PORTA
-#define SDA_PIN 7
-#define SCL_PORT PORTB
-#define SCL_PIN 2
+#define SDA_PIN PORTA0                       // SDA (PIN_A0)
+#define SCL_PORT PORTA
+#define SCL_PIN PORTA5                       // SCL (PIN_A5)
 
-/*
-    I2C_CPUFREQ, when changing CPU clock frequency dynamically
+#define I2C_TIMEOUT 100
+#define I2C_FASTMODE 1
 
-    I2C_FASTMODE = 1 meaning that the I2C bus allows speeds up to 400 kHz
-   
-    I2C_SLOWMODE = 1 meaning that the I2C bus will allow only up to 25 kHz
-   
-    I2C_NOINTERRUPT = 1 in order to prohibit interrupts while
-    communicating (see below). This can be useful if you use the library
-    for communicationg with SMbus devices, which have timeouts.
-    Note, however, that interrupts are disabled from issuing a start condition
-    until issuing a stop condition. So use this option with care!
-   
-    I2C_TIMEOUT = 0..10000 mssec in order to return from the I2C functions
-    in case of a I2C bus lockup (i.e., SCL constantly low). 0 means no timeout
- */
-
-#ifndef _TinyWire_USI_h
-#define _TinyWire_USI_h
-
-// Init function. Needs to be called once in the beginning.
-// Returns false if SDA or SCL are low, which probably means 
-// a I2C bus lockup or that the lines are not pulled up.
-bool __attribute__ ((noinline)) i2c_init(void) __attribute__ ((used));
-
-// Start transfer function: <addr> is the 8-bit I2C address (including the R/W bit).
-// Return: true if the slave replies with an "acknowledge", false otherwise
-bool __attribute__ ((noinline)) i2c_start(byte addr) __attribute__ ((used));
-
-// Similar to start function, but wait for an ACK! Be careful, this can result in an infinite loop
-void  __attribute__ ((noinline)) i2c_start_wait(byte addr) __attribute__ ((used));
-
-// Repeated start function: After having claimed the bus with a start condition,
-// you can address another or the same chip again without an intervening  stop condition.
-// Return: true if the slave replies with an "acknowledge", otherwise false
-bool __attribute__ ((noinline)) i2c_rep_start(byte addr) __attribute__ ((used));
-
-// Issue a stop condition, freeing the bus.
-void __attribute__ ((noinline)) i2c_stop() asm("ass_i2c_stop") __attribute__ ((used));
-
-// Write one byte to the slave chip that had been addressed
-// by the previous start call. <value> is the byte to be sent.
-// Return: true if the slave replies with an "acknowledge", false otherwise
-bool __attribute__ ((noinline)) i2c_write(byte value) asm("ass_i2c_write") __attribute__ ((used));
-
-
-// Read one byte. If <last> is true, we send a NAK after having received 
-// the byte in order to terminate the read sequence. 
-byte __attribute__ ((noinline)) i2c_read(bool last) __attribute__ ((used));
-
-// You can set I2C_CPUFREQ independently of F_CPU if you 
-// change the CPU frequency on the fly. If not defined, it will use the value of F_CPU
 #ifndef I2C_CPUFREQ
 #define I2C_CPUFREQ F_CPU
 #endif
 
-// If I2C_FASTMODE is set to 1, then the highest possible frequency below 400kHz
-// is selected. Be aware that not all slave chips may be able to deal with that!
 #ifndef I2C_FASTMODE
 #define I2C_FASTMODE 0
 #endif
 
-// If I2C_FASTMODE is not defined or defined to be 0, then you can set I2C_SLOWMODE to 1.
-// In this case, the I2C frequency will not be higher than 25KHz. This could be useful for problematic buses.
 #ifndef I2C_SLOWMODE
 #define I2C_SLOWMODE 0
 #endif
 
-// if I2C_NOINTERRUPT is 1, then the I2C routines are not interruptable.
-// This is most probably only necessary if you are using a 1MHz system clock,
-// you are communicating with a SMBus device, and you want to avoid timeouts.
-// Be aware that the interrupt bit is enabled after each call. So the
-// I2C functions should not be called in interrupt routines or critical regions.
 #ifndef I2C_NOINTERRUPT
 #define I2C_NOINTERRUPT 0
 #endif
 
-// I2C_TIMEOUT can be set to a value between 1 and 10000.
-// If it is defined and nonzero, it leads to a timeout if the
-// SCL is low longer than I2C_TIMEOUT milliseconds, i.e., max timeout is 10 sec
 #ifndef I2C_TIMEOUT
 #define I2C_TIMEOUT 0
 #else 
 #if I2C_TIMEOUT > 10000
-#define I2C_TIMEOUT 10000
+#error I2C_TIMEOUT is too large
 #endif
 #endif
 
-#define I2C_TIMEOUT_DELAY_LOOPS (I2C_CPUFREQ / 1000UL) * I2C_TIMEOUT / 4000UL
+#define I2C_TIMEOUT_DELAY_LOOPS (I2C_CPUFREQ/1000UL)*I2C_TIMEOUT/4000UL
 #if I2C_TIMEOUT_DELAY_LOOPS < 1
 #define I2C_MAX_STRETCH 1
 #else
@@ -114,36 +83,27 @@ byte __attribute__ ((noinline)) i2c_read(bool last) __attribute__ ((used));
 #endif
 #endif
 
-// Table of I2C bus speed in kbit/sec:
-// CPU clock:           1MHz   2MHz    4MHz   8MHz   16MHz   20MHz
-// Fast I2C mode          40     80     150    300     400     400
-// Standard I2C mode      40     80     100    100     100     100
-// Slow I2C mode          25     25      25     25      25      25     
-
-// constants for reading & writing
 #define I2C_READ    1
 #define I2C_WRITE   0
 
-// map the IO register back into the IO address space
-#define SDA_DDR (_SFR_IO_ADDR(SDA_PORT) - 1)
-#define SCL_DDR (_SFR_IO_ADDR(SCL_PORT) - 1)
-#define SDA_OUT _SFR_IO_ADDR(SDA_PORT)
-#define SCL_OUT _SFR_IO_ADDR(SCL_PORT)
-#define SDA_IN (_SFR_IO_ADDR(SDA_PORT) - 2)
-#define SCL_IN (_SFR_IO_ADDR(SCL_PORT) - 2)
+#define SDA_DDR       	(_SFR_IO_ADDR(SDA_PORT) - 1)
+#define SCL_DDR       	(_SFR_IO_ADDR(SCL_PORT) - 1)
+#define SDA_OUT       	_SFR_IO_ADDR(SDA_PORT)
+#define SCL_OUT       	_SFR_IO_ADDR(SCL_PORT)
+#define SDA_IN		(_SFR_IO_ADDR(SDA_PORT) - 2)
+#define SCL_IN		(_SFR_IO_ADDR(SCL_PORT) - 2)
 
 #ifndef __tmp_reg__
 #define __tmp_reg__ 0
 #endif
 
-// Internal delay functions.
 void __attribute__ ((noinline)) i2c_delay_half(void) asm("ass_i2c_delay_half")  __attribute__ ((used));
 void __attribute__ ((noinline)) i2c_wait_scl_high(void) asm("ass_i2c_wait_scl_high")  __attribute__ ((used));
 
-void i2c_delay_half() {                // function call 3 cycles => 3C
+void  i2c_delay_half(void) {
 #if I2C_DELAY_COUNTER < 1
   __asm__ __volatile__ (" ret");
-#else                                   // 7 cycles for call and return
+#else
   __asm__ __volatile__ 
     (
      " ldi      r25, %[DELAY]           ;load delay constant   ;; 4C \n\t"
@@ -151,13 +111,14 @@ void i2c_delay_half() {                // function call 3 cycles => 3C
      " dec r25                          ;decrement counter     ;; 4C+xC \n\t"
      " brne _Lidelay                                           ;;5C+(x-1)2C+xC\n\t"
      " ret                                                     ;; 9C+(x-1)2C+xC = 7C+xC" 
-     : : [DELAY] "M" I2C_DELAY_COUNTER : "r25");                // 7 cycles + 3 times x cycles
+     : : [DELAY] "M" I2C_DELAY_COUNTER : "r25");
 #endif
 }
 
-void i2c_wait_scl_high() {
+void i2c_wait_scl_high(void)
+{
 #if I2C_TIMEOUT <= 0
-    __asm__ __volatile__
+  __asm__ __volatile__ 
     ("_Li2c_wait_stretch: \n\t"
      " sbis	%[SCLIN],%[SCLPIN]	;wait for SCL high \n\t" 
      " rjmp	_Li2c_wait_stretch \n\t"
@@ -165,7 +126,7 @@ void i2c_wait_scl_high() {
      " ret "
      : : [SCLIN] "I" (SCL_IN), [SCLPIN] "I" (SCL_PIN));
 #else
-    __asm__ __volatile__
+  __asm__ __volatile__ 
     ( " ldi     r27, %[HISTRETCH]       ;load delay counter \n\t"
       " ldi     r26, %[LOSTRETCH] \n\t"
       "_Lwait_stretch: \n\t"
@@ -194,15 +155,15 @@ void i2c_wait_scl_high() {
 
       "_Lwait_return:"
       : : [SCLIN] "I" (SCL_IN), [SCLPIN] "I" (SCL_PIN), 
-    [HISTRETCH] "M" (I2C_MAX_STRETCH>>8), 
-    [LOSTRETCH] "M" (I2C_MAX_STRETCH&0xFF)
+	[HISTRETCH] "M" (I2C_MAX_STRETCH>>8), 
+	[LOSTRETCH] "M" (I2C_MAX_STRETCH&0xFF)
       : "r26", "r27");
 #endif
 }
 
 bool i2c_init(void) {
-    __asm__ __volatile__
-    (" cbi      %[SDADDR],%[SDAPIN]     ;release SDA \n\t"
+  __asm__ __volatile__ 
+    (" cbi      %[SDADDR],%[SDAPIN]     ;release SDA \n\t" 
      " cbi      %[SCLDDR],%[SCLPIN]     ;release SCL \n\t" 
      " cbi      %[SDAOUT],%[SDAPIN]     ;clear SDA output value \n\t" 
      " cbi      %[SCLOUT],%[SCLPIN]     ;clear SCL output value \n\t" 
@@ -219,11 +180,11 @@ bool i2c_init(void) {
        [SCLIN] "I" (SCL_IN), [SCLOUT] "I" (SCL_OUT),
        [SDADDR] "I"  (SDA_DDR), [SDAPIN] "I" (SDA_PIN), 
        [SDAIN] "I" (SDA_IN), [SDAOUT] "I" (SDA_OUT)); 
-    return true;
+  return true;
 }
 
-bool i2c_start(byte addr) {
-    __asm__ __volatile__
+bool  i2c_start(uint8_t addr) {
+  __asm__ __volatile__ 
     (
 #if I2C_NOINTERRUPT
      " cli                              ;clear IRQ bit \n\t"
@@ -236,11 +197,11 @@ bool i2c_start(byte addr) {
      " ret"
      : : [SDADDR] "I"  (SDA_DDR), [SDAPIN] "I" (SDA_PIN),
        [SCLIN] "I" (SCL_IN),[SCLPIN] "I" (SCL_PIN)); 
-    return true;
+  return true;
 }
 
-bool i2c_rep_start(byte addr) {
-    __asm__ __volatile__
+bool  i2c_rep_start(uint8_t addr) {
+  __asm__ __volatile__
     (
 #if I2C_NOINTERRUPT
      " cli \n\t"
@@ -262,9 +223,9 @@ bool i2c_rep_start(byte addr) {
   return true;
 }
 
-void i2c_start_wait(byte addr) {
-    __asm__ __volatile__
-    (
+void  i2c_start_wait(uint8_t addr) {
+ __asm__ __volatile__ 
+   (
     " push	r24                     ;save original parameter \n\t"
     "_Li2c_start_wait1: \n\t"
     " pop       r24                     ;restore original parameter\n\t"
@@ -288,8 +249,8 @@ void i2c_start_wait(byte addr) {
       [SCLIN] "I" (SCL_IN),[SCLPIN] "I" (SCL_PIN)); 
 }
 
-void i2c_stop() {
-    __asm__ __volatile__
+void  i2c_stop(void) {
+  __asm__ __volatile__ 
     (
      " sbi      %[SCLDDR],%[SCLPIN]     ;force SCL low \n\t" 
      " sbi      %[SDADDR],%[SDAPIN]     ;force SDA low \n\t" 
@@ -307,8 +268,8 @@ void i2c_stop() {
          [SDADDR] "I"  (SDA_DDR), [SDAPIN] "I" (SDA_PIN)); 
 }
 
-bool i2c_write(byte value) {
-    __asm__ __volatile__
+bool i2c_write(uint8_t value) {
+  __asm__ __volatile__ 
     (
      " sec                              ;set carry flag \n\t"
      " rol      r24                     ;shift in carry and shift out MSB \n\t"
@@ -380,11 +341,11 @@ bool i2c_write(byte value) {
      ::
       [SCLDDR] "I"  (SCL_DDR), [SCLPIN] "I" (SCL_PIN), [SCLIN] "I" (SCL_IN),
       [SDADDR] "I"  (SDA_DDR), [SDAPIN] "I" (SDA_PIN), [SDAIN] "I" (SDA_IN)); 
-    return true;
+  return true;
 }
 
-byte i2c_read(bool last) {
-    __asm__ __volatile__
+uint8_t i2c_read(bool last) {
+  __asm__ __volatile__ 
     (
      " ldi	r23,0x01 \n\t"
      "_Li2c_read_bit: \n\t"
@@ -449,10 +410,7 @@ byte i2c_read(bool last) {
       [SCLDDR] "I"  (SCL_DDR), [SCLPIN] "I" (SCL_PIN), [SCLIN] "I" (SCL_IN),
       [SDADDR] "I"  (SDA_DDR), [SDAPIN] "I" (SDA_PIN), [SDAIN] "I" (SDA_IN) 
      ); 
-    return ' ';
+  return ' ';
 }
 
 #endif
-
-
-
