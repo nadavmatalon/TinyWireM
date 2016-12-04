@@ -13,7 +13,7 @@
 
 
     HW SETUP
-    --------------
+    --------
 
     - Connect Arduino Pin A4 (HW SDA) to ATtiny84A Pin PA0 (SW SDA) with a 2K2 pull-up resistor to 5V
     - Connect Arduino Pin A5 (HW SCL) to ATtiny84A Pin PA5 (SW SCL) with a 2K2 pull-up resistor to 5V
