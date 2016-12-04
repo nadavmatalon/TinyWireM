@@ -1,0 +1,40 @@
+#######################################
+# Syntax Coloring Map For TinyWireM
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+TinyWireM	KEYWORD1
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin	KEYWORD2
+end	KEYWORD2
+beginTransmission	KEYWORD2
+endTransmission	KEYWORD2
+write	KEYWORD2
+read	KEYWORD2
+requestFrom	KEYWORD2
+available	KEYWORD2
+peek	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+#	LITERAL1
+
+
+#######################################
+# Built-In Variables (LITERAL2)
+#######################################
+
+#	LITERAL2
