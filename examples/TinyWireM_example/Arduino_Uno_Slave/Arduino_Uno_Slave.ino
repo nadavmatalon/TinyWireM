@@ -59,9 +59,11 @@
 #include <Wire.h>
 
 volatile byte flag = 0;
+
 volatile byte data = 0;
 
 const byte SLAVE_ADDR = 100;
+
 void setup() {
     Serial.begin(9600);
     Wire.begin(SLAVE_ADDR);
