@@ -13,9 +13,8 @@ This library enables members of the ATtiny family to become an I2C Bus Master. T
 ## REPOSITORY CONTENTS
 
 - **TinyWireM.h** - Library Header file.
-- **TinyWireM.h.cpp** - Library Compilation.
 - **/utility** 
-    - **TinyWireM_USI.h** - Header file with the TWI-USI functionality.
+    - **TinyWireM_USI.h** - Header file with the software TWI-USI functionality (contains SDA & SCL pin number definitions, I2C bus speed, etc.)
 - **/examples**  
     - **/TinyWireM_Example**
         - **/ATtiny84A_Master**
