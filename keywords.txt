@@ -17,7 +17,6 @@ TinyWireM	KEYWORD1
 #######################################
 
 begin	KEYWORD2
-end	KEYWORD2
 beginTransmission	KEYWORD2
 endTransmission	KEYWORD2
 write	KEYWORD2
