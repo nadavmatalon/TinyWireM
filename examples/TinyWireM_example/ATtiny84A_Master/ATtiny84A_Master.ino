@@ -8,9 +8,8 @@
     The following sketch provides a simple example of setting up an ATtiny84A as an I2C Bus Master
     and an Arduino Uno as a Slave device located at I2C address 100.
 
-    At runtime, the ATtiny Master will send 10 successive bytes with values 0-10 to the Arduino Slave
-    which will then print them out using the Serial Monitor.
-
+    At runtime, the ATtiny Master will send successive bytes to the Arduino Slave which will then
+    print them out using the Serial Monitor.
 
     HW SETUP
     --------
