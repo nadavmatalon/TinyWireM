@@ -39,8 +39,8 @@
  
  *==============================================================================================================*/
 
-#ifndef TinyWireM_h
-#define TinyWireM_h
+#ifndef TinyWireM_H
+#define TinyWireM_H
 
 #include "utility/TinyWireM_USI.h"
 #include <inttypes.h>
