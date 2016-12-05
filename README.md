@@ -18,9 +18,10 @@ This library enables members of the ATtiny family to become an I2C Bus Master. T
 - **/examples**  
     - **/TinyWireM_Example**
         - **/ATtiny84A_Master**
-            - **ATtiny84A_Master.ino** - Master-Side: A basic sketch implementing the ATtiny84A as I2C Master and Arduino Uno as I2C slave  
+            - **ATtiny84A_Master.ino** - Master-Side: A basic sketch implementing the ATtiny84A as I2C Master        - **/ATtiny841_Master**
+            - **ATtiny841_Master.ino** - Master-Side: A basic sketch implementing the ATtiny841 as I2C Master  
         - **Arduino_Uno_Slave** 
-            - **Arduino_Uno_Slave.ino** - Slave-Side: A basic sketch implementing the ATtiny84A as I2C Master and Arduino Uno as I2C slave  
+            - **Arduino_Uno_Slave.ino** - Slave-Side: A basic sketch implementing the Arduino Uno as I2C slave  
 - **/extras** 
     - **License.txt** - A copy of the end-user license agreement.  
 - **keywords.txt** - Keywords for this library which will be highlighted in sketches within the Arduino IDE. 

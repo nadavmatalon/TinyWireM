@@ -47,8 +47,12 @@
 
 #define I2C_FASTMODE 1
 
-#ifndef F_CPU
+#if defined(__AVR_ATtiny84__)
 #define F_CPU 20000000
+#endif
+
+#if defined(__AVR_ATtiny841__)
+#define F_CPU 16000000
 #endif
 
 #ifndef I2C_CPUFREQ

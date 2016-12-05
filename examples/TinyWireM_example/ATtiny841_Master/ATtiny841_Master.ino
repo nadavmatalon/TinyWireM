@@ -1,26 +1,26 @@
 /*
-    TinyWireM Library: ATtiny84a-Side (Master)
+    TinyWireM Library: ATtiny841-Side (Master)
     ------------------------------------------
 
     INTRODUCTION
     ------------
-    The following sketch provides a simple example of setting up an ATtiny84A as an I2C Bus Master
+    The following sketch provides a simple example of setting up an ATtiny841 as an I2C Bus Master
     and an Arduino Uno as a Slave device located at I2C address 100.
 
-    At runtime, the ATtiny Master will send successive bytes to the Arduino Slave which will then
+    At runtime, the ATtiny841 Master will send successive bytes to the Arduino Slave which will then
     print them out using the Serial Monitor.
 
     HW SETUP
     --------
-    - Connect Arduino Pin A4 (HW SDA) to ATtiny84A Pin PA0 (SW SDA) with a 2K2 pull-up resistor to 5V
-    - Connect Arduino Pin A5 (HW SCL) to ATtiny84A Pin PA5 (SW SCL) with a 2K2 pull-up resistor to 5V
-    - Follow the basic hookup for Arduino & ATtiny84A (Common ground for both ICs, 100nF decoupling capacitors,
+    - Connect Arduino Pin A4 (HW SDA) to ATtiny841 Pin PA0 (SW SDA) with a 2K2 pull-up resistor to 5V
+    - Connect Arduino Pin A5 (HW SCL) to ATtiny841 Pin PA5 (SW SCL) with a 2K2 pull-up resistor to 5V
+    - Follow the basic hookup for Arduino & ATtiny841 (Common ground for both ICs, 100nF decoupling capacitors,
       10K pullup resistors for RESET pins, and if needed, external crystals)
 
 
     RUNNING THE SKETCH
     ------------------
-    Upload this sketch to the ATtiny84A and the other example sketch (Arduino_Uno_Slave.ino) to the
+    Upload this sketch to the ATtiny841 and the other example sketch (Arduino_Uno_Slave.ino) to the
     Arduino. Then open the Serial Monitor (make sure the Baud Rate is set to 9600).
 
     BUG REPORTS
@@ -49,7 +49,7 @@
     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#define __AVR_ATtiny84__
+#define __AVR_ATtiny841__
 
 #include <Arduino.h>
 #include "TinyWireM.h"
